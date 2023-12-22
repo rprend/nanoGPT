@@ -37,10 +37,33 @@ block_size = 8
 # print(train_data[:block_size + 1])
 
 # Each batch actually has batch_size predictions.
-x = train_data[:block_size]
-y = train_data[1:block_size + 1]
-for t in range(block_size):
-    context = x[:t + 1]
-    target = y[t]
+# x = train_data[:block_size]
+# y = train_data[1:block_size + 1]
+# for t in range(block_size):
+#     context = x[:t + 1]
+#     target = y[t]
     # print(f"when input is {context} the target is {target}")
 
+# Now actually create the batches.
+batch_size = 4
+block_size = 8
+torch.manual_seed(1337)
+
+# Generate a small batch of data of inputs x and targets y.
+def get_batch(split):
+  data = train_data if split == 'train' else val_data
+
+  # Generate batch sized number of random indices.
+  rand_indices = torch.randint(len(data) - block_size, (batch_size,))
+  x = torch.stack([data[idx:idx + block_size] for idx in rand_indices])
+  y = torch.stack([data[idx + 1:idx + block_size + 1] for idx in rand_indices])
+
+  return x, y
+
+xb, yb = get_batch('train')
+
+for b in range(batch_size):
+  for t in range(block_size):
+    context = xb[b, :t + 1]
+    target = yb[b, t]
+    print(f"when input is {context} the target is {target}")
