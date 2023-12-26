@@ -69,9 +69,10 @@ for i in range(5):
 
     # Sample from the distribution.
     ix = torch.multinomial(probs, 1).item()
-    out.append(itos[ix])
 
     if ix == len(stoi) - 1:
       break
+
+    out.append(itos[ix])
 
 print(''.join(out))
