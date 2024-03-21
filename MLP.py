@@ -50,7 +50,9 @@ hidden_size = 300
 W1 = torch.randn((embedding_size * block_size, hidden_size), requires_grad=True)
 b1 = torch.randn((hidden_size,), requires_grad=True)
 
-# Then the output layer.
+# Then the output layer. Initialize the weights to be small random numbers and the biases to be 0.
+# We do this because we want the logits to be roughly equal at the first pass. This is to avoid a
+# hockey stick loss curve.
 W2 = torch.randn((hidden_size, vocab_size), requires_grad=True)
 b2 = torch.randn((vocab_size,), requires_grad=True)
 
