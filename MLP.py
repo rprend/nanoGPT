@@ -75,9 +75,9 @@ for rate in learning_rates:
     # Get a batch.
     ix = torch.randint(0, Xtr.shape[0], (batch_size,))
 
-    emb = C(X[ix]) # 32, 3, 2
-    H = torch.tanh(emb.view(-1, embedding_size * block_size) @ W1 + b1) # 32, 100
-    logits = H @ W2 + b2 # 32, 27
+    emb = C(X[ix]) # batch_size, block_size, embedding_size
+    H = torch.tanh(emb.view(-1, embedding_size * block_size) @ W1 + b1) # batch_size, 300
+    logits = H @ W2 + b2 # batch_size, vocab_size
     loss = F.cross_entropy(logits, Ytr[ix])
 
     # print("Loss: ", loss.item())
@@ -102,8 +102,8 @@ loss = F.cross_entropy(logits, Ytr)
 print("Training loss: ", loss.item())
 
 import matplotlib.pyplot as plt
-# plt.plot(stepi, lossi)
-# plt.show()
+plt.plot(stepi, lossi)
+plt.show()
 
 # Now check the dev loss.
 emb = C(Xdev)
