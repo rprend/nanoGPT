@@ -62,8 +62,30 @@ def get_batch(split):
 
 xb, yb = get_batch('train')
 
-for b in range(batch_size):
-  for t in range(block_size):
-    context = xb[b, :t + 1]
-    target = yb[b, t]
-    print(f"when input is {context} the target is {target}")
+# for b in range(batch_size):
+#   for t in range(block_size):
+#     context = xb[b, :t + 1]
+#     target = yb[b, t]
+#     print(f"when input is {context} the target is {target}")
+
+# Test this out with a Bigram Language Model.
+import torch.nn as nn
+from torch.nn import functional as F
+
+class BigramLanguageModel(nn.Module):
+  def __init__(self, vocab_size):
+    super().__init__()
+    self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
+
+  def forward(self, idx, targets):
+    # idx and targets are both (B, T) tensors.
+    logits = self.token_embedding_table(idx) # (B, T, V)
+    print(logits.shape)
+    print(targets)
+    # loss2 = F.cross_entropy(logits, targets)
+    # loss2.backward()
+
+    return logits
+
+m = BigramLanguageModel(vocab_size)
+out = m(xb, yb)
