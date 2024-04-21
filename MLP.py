@@ -78,7 +78,9 @@ for rate in learning_rates:
     ix = torch.randint(0, Xtr.shape[0], (batch_size,))
 
     emb = C(X[ix]) # batch_size, block_size, embedding_size
-    H = torch.tanh(emb.view(-1, embedding_size * block_size) @ W1 + b1) # batch_size, 300
+    # The hidden layer pre-activation.
+    hPreact = emb.view(-1, embedding_size * block_size) @ W1 + b1 # batch_size, hidden_size
+    H = torch.tanh(hPreact) # batch_size, 300
     logits = H @ W2 + b2 # batch_size, vocab_size
     loss = F.cross_entropy(logits, Ytr[ix])
 
