@@ -1,4 +1,4 @@
-# We simply copy the multi - layer perceptron architecture here, and we will modify the 
+# We start by copying the multi - layer perceptron architecture here, and modify the
 # forward pass to include batch normalization and kaiming initialization.
 
 # First open the dataset in names.txt
